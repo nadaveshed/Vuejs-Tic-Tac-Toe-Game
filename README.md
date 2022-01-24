@@ -7,8 +7,8 @@ npm install
 
 ### Run server
 
-#### -Open terminal
 ```
+-Open terminal-
 cd server
 node server.js
 ```
