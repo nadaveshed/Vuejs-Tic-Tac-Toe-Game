@@ -46,11 +46,6 @@ export default {
     this.test();
     },
   methods: {
-    // test(){
-    //   console.log("test", this.gameArray[0])
-    //   this.gameArray[0] = "X"
-    // },
-
     play(index, drawFromOther) {
 
       if(!this.gameOver) {
