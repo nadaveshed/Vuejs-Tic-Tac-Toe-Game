@@ -4,7 +4,7 @@
     <div class="title"> Tic tac toe</div>
 <!--    <p id="demo">Player {{player}} turn</p>-->
     <div class="game">
-      <div id="cell0" class="cell" @click="play(0, false);">{{ gameArray[0] }}</div>
+      <div id="cell0" class="cell" @click="play(0, false)">{{ gameArray[0] }}</div>
       <div id="cell1" class="cell" @click="play(1, false)">{{ gameArray[1] }}</div>
       <div id="cell2" class="cell" @click="play(2, false)">{{ gameArray[2] }}</div>
       <div id="cell3" class="cell" @click="play(3, false)">{{ gameArray[3] }}</div>
@@ -32,6 +32,7 @@ export default {
   },
   data() {
     return {
+      t: 0,
       gameArray: ["", "", "", "", "", "", "", "", ""],
       currentTurn: "",
       winner: "",
@@ -41,16 +42,24 @@ export default {
       gameOver: false,
     }
   },
+  mounted() {
+    this.test();
+    },
   methods: {
+    // test(){
+    //   console.log("test", this.gameArray[0])
+    //   this.gameArray[0] = "X"
+    // },
+
     play(index, drawFromOther) {
 
       if(!this.gameOver) {
         if (this.playerTurn) {
-          this.gameArray[index] = "X"
+          this.$set(this.gameArray, index, "X");
         } else {
-          this.gameArray[index] = "O"
+          this.$set(this.gameArray, index, "O");
+
         }
-        document.getElementById(`cell${index}`).innerHTML = this.gameArray[index];
         if (!drawFromOther) {
           socket.emit("play", index, this.player)
         }
@@ -69,7 +78,8 @@ export default {
       }
     },
     checkForWin() {
-      const winsCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+      const winsCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
 
       for (let i = 0; i < winsCombinations.length; i++) {
         let firstIndex = winsCombinations[i][0];
@@ -94,11 +104,10 @@ export default {
     },
     resetBoard() {
       for (let i=0; i<= 8; i++) {
-        this.gameArray[i] = ""
+        this.$set(this.gameArray, i, "");
         this.gameOver = false;
         this.winner = ""
         this.tie = false
-        document.getElementById(`cell${i}`).innerHTML = this.gameArray[i];
       }
     }
   },
