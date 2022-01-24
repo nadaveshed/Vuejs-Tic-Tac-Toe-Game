@@ -6,9 +6,11 @@ const io = require('socket.io')(server, {
     }
 });
 io.on('connection', (socket)=> {
-    socket.on("play", (index, player) => {
-        console.log("server received", index, player)
+    socket.on("play", (index, playerIndex) => {
+        console.log('player-number', playerIndex);
+        console.log("server received", index)
         socket.broadcast.emit("play", index)
+
     })
 })
 

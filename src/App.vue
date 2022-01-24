@@ -2,7 +2,7 @@
 
   <div class="container">
     <div class="title"> Tic tac toe</div>
-<!--    <p id="demo">Player {{player}} turn</p>-->
+    <p id="demo">{{playerIndex}}</p>
     <div class="game">
       <div id="cell0" class="cell" @click="play(0, false)">{{ gameArray[0] }}</div>
       <div id="cell1" class="cell" @click="play(1, false)">{{ gameArray[1] }}</div>
@@ -16,7 +16,7 @@
     </div>
     <div class="gameResult">
       <div id="winner" v-if="gameOver"> Winner is {{winner}} </div>
-      <div v-if="tie"> Game is Tie </div>
+      <div v-if="tie && !gameOver"> Game is Tie </div>
     </div>
     <button class="resetButton" @click="resetBoard()" v-if="gameOver || tie">RESET BOARD</button>
 
@@ -37,39 +37,30 @@ export default {
       currentTurn: "",
       winner: "",
       tie: false,
-      player: "1",
+      playerIndex: "Player 1 turn",
       playerTurn: true,
       gameOver: false,
     }
   },
-  mounted() {
-    this.test();
-    },
+
   methods: {
     play(index, drawFromOther) {
-
       if(!this.gameOver) {
         if (this.playerTurn) {
+          this.playerIndex = "Player 2 turn"
           this.$set(this.gameArray, index, "X");
         } else {
+          this.playerIndex = "Player 1 turn"
           this.$set(this.gameArray, index, "O");
 
         }
         if (!drawFromOther) {
-          socket.emit("play", index, this.player)
+          socket.emit("play", index, this.playerIndex)
         }
         console.log("content", this.gameArray)
         this.playerTurn = !this.playerTurn;
-        // this.playing();
         this.checkForWin();
         this.checkForTie();
-      }
-    },
-    playing() {
-      if(this.playerTurn) {
-        this.player = " player 1"
-      } else {
-        this.player = " player 2"
       }
     },
     checkForWin() {
@@ -86,6 +77,7 @@ export default {
           this.gameOver = true;
 
           this.winner = this.gameArray[firstIndex];
+          return true
         }
       }
     },
