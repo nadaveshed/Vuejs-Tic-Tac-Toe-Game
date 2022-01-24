@@ -34,7 +34,6 @@ export default {
     return {
       t: 0,
       gameArray: ["", "", "", "", "", "", "", "", ""],
-      currentTurn: "",
       winner: "",
       tie: false,
       playerIndex: "Player 1 turn",
@@ -94,6 +93,7 @@ export default {
         this.$set(this.gameArray, i, "");
         this.gameOver = false;
         this.winner = ""
+        this.playerIndex = "Player 1 turn";
         this.tie = false
       }
     }
